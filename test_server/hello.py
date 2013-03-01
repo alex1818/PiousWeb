@@ -1,9 +1,11 @@
 from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
+SERVER_NAME = "boxysean.com"
+SERVER_PORT = 8080
+
 @app.route("/")
 def hello():
-    print "here"
     return render_template('hello.html')
 
 if app.config['DEBUG'] or True:
@@ -14,4 +16,4 @@ if app.config['DEBUG'] or True:
     })
 
 if __name__ == "__main__":
-    app.run()
+    app.run(SERVER_NAME, SERVER_PORT)

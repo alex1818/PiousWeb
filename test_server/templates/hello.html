@@ -1,16 +1,68 @@
 <html>
 
 <head>
-<title>Example page!</title>
+   <meta http-equiv="refresh" content="30; URL=/">
+
+  <title>The Pious Web Portal</title>
+
+  <style type="text/css">
+
+    body {
+      background-image: url('static/holy-cross_1036_1024x768.jpg');
+      background-size: 100%;
+      background-attachment: fixed;
+      font-family: verdana, sans;
+    }
+
+    p, h1, h2 {
+    }
+
+    .content {
+      width: 640px;
+      margin: 0 auto;
+    }
+  </style>
+
+  <script>
+    function timedRefresh(timeoutPeriod) {
+      setTimeout("location.reload(true);",timeoutPeriod);
+    }
+  </script>
 </head>
 
-<body>
-What's up!
+<body onload="timedrefresh(5000)">
+  <div class="content">
+    <h1>The Pious Web</h1>
 
-<br />
-<br />
+    <p>The Pious Web is an Internet experience that constantly reminds you of of God's omniscience.</p>
+  
+    <p>All of these features are implemented using Divine Intervention(c) at the ISP level, so it is independent of browser and operating system.</p>
 
-<img src="static/pot.gif" />
+    <h2>Features</h2>
+
+    <h3>Jesus'd images</h3>
+  
+    <p>On the Pious Web, Jesus accompanies your images.</p>
+  
+    <img src="static/pot.gif" />
+
+    <h2>How you can help</h2>
+
+    <h3>The Pious Web logo</h3>
+
+    <p>The Pious Web needs a nice logo. It should be reverant of God's word.</p>
+
+    <p>Also this web portal could be made a million times more beautiful.</p>
+
+    <h3>(Soon) JavaScript plugin for extra hacking</h3>
+
+    <p>Soon, each page will have an extra JavaScript file loaded into it for extra access in making a religious experience. Check out the code at <a href="https://github.com/boxysean/PiousWeb">github</a> and add your own JavaScript religious hacks.</p>
+
+    <h3>Flushing out the image overlay feature</h3>
+
+    <p>Buddy Jesus is cool, but I want a more religious experience. Perhaps a gradient mask fading to a really beautiful picture of Jesus.</p>
+
+  </div>
 </body>
 
 </html>
