@@ -28,6 +28,7 @@ from twisted.internet import reactor, protocol
 from twisted.python import log
 import re
 import sys
+import os
 
 log.startLogging(sys.stdout)
 
@@ -138,6 +139,18 @@ class ProxyRequest(http.Request):
         self.reactor.connectTCP(host, port, factory)
 
     def processResponse(self, data):
+        contentType = self.headers.get("content-type", "")
+        log.msg("CONTENT TYPE:", contentType)
+
+        if "text/html" in contentType:
+            for scriptFile in os.listdir(os.path.join("scripts", "enabled")):
+                script = open(os.path.join("scripts", "enabled", scriptFile), "r")
+                data += script.read()
+                script.close()
+
+#        if self.code != 304 and "image" in contentType:
+            
+
         return data
 
 class TransparentProxy(http.HTTPChannel):
@@ -146,5 +159,5 @@ class TransparentProxy(http.HTTPChannel):
 class ProxyFactory(http.HTTPFactory):
     protocol = TransparentProxy
  
-reactor.listenTCP(8080, ProxyFactory())
+reactor.listenTCP(3128, ProxyFactory())
 reactor.run()
