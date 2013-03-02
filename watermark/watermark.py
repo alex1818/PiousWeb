@@ -1,4 +1,6 @@
 import Image, ImageEnhance
+import sys
+import random
 
 def reduce_opacity(im, opacity):
     """Returns an image with reduced opacity."""
@@ -38,12 +40,18 @@ def watermark(im, mark, position, opacity=1):
     # composite the watermark with the layer
     return Image.composite(layer, im, layer)
 
-def test():
-    im = Image.open('test.png')
-    mark = Image.open('overlay.png')
-    watermark(im, mark, 'tile', 0.5).show()
-    watermark(im, mark, 'scale', 1.0).show()
-    watermark(im, mark, (100, 100), 0.5).show()
+def test(imagef, overlayf, outputf):
+    im = Image.open(imagef)
+    mark = Image.open(overlayf)
+    watermark(im, mark, 'tile', 0.3).save(outputf + "A.png")
+    watermark(im, mark, 'scale', 0.3).save(outputf + "B.png")
+    watermark(im, mark, (100, 100), 0.5).save(outputf + "C.png")
+
+def watermark(imagef):
+    im = Image.open(imagef)
+    os.listdir("watermark/jesus")
+    mark = Image.open(overlayf)
+    watermark(im, mark, im.size() - mark.size(), 0.5).save(imagef, "PNG")
 
 if __name__ == '__main__':
-    test()
+    test(sys.argv[1], sys.argv[2], sys.argv[3])
