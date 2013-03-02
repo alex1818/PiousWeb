@@ -1,6 +1,7 @@
 import Image, ImageEnhance
 import sys
 import random
+import os
 
 def reduce_opacity(im, opacity):
     """Returns an image with reduced opacity."""
@@ -47,11 +48,19 @@ def test(imagef, overlayf, outputf):
     watermark(im, mark, 'scale', 0.3).save(outputf + "B.png")
     watermark(im, mark, (100, 100), 0.5).save(outputf + "C.png")
 
-def watermark(imagef):
+def watermarkApply(imagef):
     im = Image.open(imagef)
-    os.listdir("watermark/jesus")
-    mark = Image.open(overlayf)
-    watermark(im, mark, im.size() - mark.size(), 0.5).save(imagef, "PNG")
+
+    if im.size[0] < 50 or im.size[1] < 50:
+        return
+
+    jesusf = random.choice(os.listdir(os.path.join("watermark", "jesus")))
+    mark = Image.open(os.path.join("watermark", "jesus", jesusf))
+
+    if mark.size[1]+20 > im.size[1]:
+        mark.thumbnail((im.size[1]-20, im.size[1]-20), Image.ANTIALIAS)
+
+    watermark(im, mark, (im.size[0] - mark.size[0] - 10, im.size[1] - mark.size[1] - 10), 1).save(imagef, "PNG")
 
 if __name__ == '__main__':
     test(sys.argv[1], sys.argv[2], sys.argv[3])

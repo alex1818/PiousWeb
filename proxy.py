@@ -29,20 +29,25 @@ from twisted.python import log
 import re
 import sys
 import os
+import random
 from datetime import datetime, timedelta
+
+from watermark import watermark 
 
 websiteCounts = {}
 websiteLastCount = {}
-gcount = 0
+
+imageCount = [0]
+
+for f in os.listdir("tmp"):
+    try:
+        imageCount[0] = max(imageCount[0], int(f))
+    except:
+        pass
+
+imageCount[0] = imageCount[0] + 1
 
 log.startLogging(sys.stdout)
-
-def my_import(name, globals, locals):
-    mod = __import__(name, globals, locals)
-    components = name.split('.')
-    for comp in components[1:]:
-        mod = getattr(mod, comp)
-    return mod
 
 class ProxyClient(http.HTTPClient):
     """ The proxy client connects to the real server, fetches the resource and
@@ -155,23 +160,29 @@ class ProxyRequest(http.Request):
         log.msg("CONTENT TYPE:", contentType)
 
         if "text/html" in contentType:
-            clientTuple = tuple([tuple(self.requestHeaders.getRawHeaders(x)) for x in ("accept-language", "accept-encoding", "accept", "user-agent")])
-            clientHash = hash(clientTuple)
+            gcount = -1
             popup = False
-            if clientHash not in websiteLastCount or datetime.now() - timedelta(seconds=5) > websiteLastCount[clientHash]:
-                websiteCounts[clientHash] = websiteCounts.get(clientHash, 0) + 1
-                websiteLastCount[clientHash] = datetime.now()
-                popup = True
+
+            # apparently the client tuple line goes a little haywire sometime
+            try:
+                clientTuple = tuple([tuple(self.requestHeaders.getRawHeaders(x)) for x in ("accept-language", "accept-encoding", "accept", "user-agent")])
+                clientHash = hash(clientTuple)
+                if clientHash not in websiteLastCount or datetime.now() - timedelta(seconds=5) > websiteLastCount[clientHash]:
+                    websiteCounts[clientHash] = websiteCounts.get(clientHash, 0) + 1
+                    websiteLastCount[clientHash] = datetime.now()
+                    gcount = websiteCounts[clientHash]
+                    popup = True
+            except:
+                pass
 
             for scriptFile in sorted(os.listdir(os.path.join("scripts", "enabled"))):
                 path, extension = os.path.splitext(scriptFile)
                 log.msg("SCRIPT", scriptFile, extension, ".")
                 if extension == ".py" and path != "__init__":
-                    gcount = websiteCounts[clientHash]
                     mod = __import__("scripts.enabled.%s" % path, fromlist=['Extra'])
                     extra = getattr(mod, "Extra")
                     klass = extra()
-                    data = klass.onLoad(data, websiteCounts[clientHash], popup)
+                    data = klass.onLoad(data, gcount, popup)
                 elif extension == ".html":
                     script = open(os.path.join("scripts", "enabled", scriptFile), "r")
                     data += script.read()
@@ -185,8 +196,23 @@ class ProxyRequest(http.Request):
                     data += "<style media='screen' type='text/css'>" + script.read() + "</style>"
                     script.close()
 
-#        if self.code != 304 and "image" in contentType:
-            
+        # half the time, hence the random choice
+        if self.code != 304 and "image" in contentType and random.choice([True, False]):
+            if not os.path.exists("tmp"):
+                os.mkdir("tmp")
+
+            count = globals()["imageCount"][0]
+            fileName = os.path.join("tmp", "%06d" % (count))
+            globals()["imageCount"][0] = count + 1
+            f = open(fileName, "w")
+            f.write(data)
+            f.close()
+
+            watermark.watermarkApply(fileName)
+
+            f = open(fileName, "r")
+            data = f.read()
+            f.close()
 
         return data
 
@@ -195,6 +221,6 @@ class TransparentProxy(http.HTTPChannel):
  
 class ProxyFactory(http.HTTPFactory):
     protocol = TransparentProxy
- 
+
 reactor.listenTCP(3128, ProxyFactory())
 reactor.run()
