@@ -1,75 +1,45 @@
 class Extra(object):
-
-    content = [
-        """<img src="http://192.168.1.2/thepiousweb/ThePiousWeb.png" />
-        <br />
-        <br />
-        <table cellpadding=20>
-          <tr>
-            <td><img src="http://192.168.1.2/thepiousweb/tablets.jpg" /></td>
-            <td><p>And I said to Moses, "Come up to me on the mountain and stay here, and I will give you the tablets of stone, with the law and commands I have written for their instruction." (Exodus 32:16)</p>
-
-            <p>The tablets were the work of God [that&#39;s me]; the writing was the writing of God [me again], engraved on the tablets. (Exodus 24:12)</p>
-
-            <p>Thou shalt subscribe to the commandments, mobile or otherwise.</p>
-            </td>
-          </tr>
-        </table>
-        """,
-
-        """<img src="http://192.168.1.2/thepiousweb/ThePiousWeb.png" />
-        <br />
-        <br />
-        <table cellpadding=20>
-          <tr>
-            <td><img src="http://192.168.1.2/thepiousweb/adameve.jpg" /></td>
-            <td><p>Really? This is how you spend your time?</p>
-
-            <p><i>Commandment: Thou shalt not be tempted by time-wasting ideas.</i></p>
-
-            <p>Continue surfing the pious way?</p>
-            </td>
-          </tr>
-        </table>
-        """,
-
-        """<img src="http://192.168.1.2/thepiousweb/ThePiousWeb.png" />
-        <br />
-        <br />
-        <table cellpadding=20>
-          <tr>
-            <td><img src="http://192.168.1.2/thepiousweb/jesuslaptop.jpg" /></td>
-            <td><p>Your search terms appear less than honourable.</p>
-
-            <p><i>Commandment: Thou shalt surf only for the word of God. And preferably when wearing sandals.</i></p>
-
-            <p>Continue surfing for the word of God?</p>
-            </td>
-          </tr>
-        </table>
-        """,
-
-        """<img src="http://192.168.1.2/thepiousweb/ThePiousWeb.png" />
-        <br />
-        <br />
-        <table cellpadding=20>
-          <tr>
-            <td><img src="http://192.168.1.2/thepiousweb/buddha.jpg" /></td>
-            <td><p>Who speaks these words you read?</p>
-
-            <p><i>Commandment: Thou shalt not praise false deities, corporation and/or allow cookies?</i></p>
-
-            <p>Continue reading?</p>
-            </td>
-          </tr>
-        </table>
-        """,
-
-        ]
-
     def onLoad(self, data, views, popup):
         if popup:
-            data = self.popup(data, self.content[views % len(self.content)].replace("\n", ""))
+            data = self.imagePopup(data, "http://192.168.1.2/thepiousweb/really2.png")
+        else:
+            data = self.constantPopup(data)
+            #data = self.popup(data, self.content[views % len(self.content)].replace("\n", ""))
+        return data
+
+    def constantPopup(self, data):
+        data += """
+          <script>
+            window.top.onload = function() {
+              TINY.box.show({
+                html:'You are being watched over by God.<br />If you're feeling sufficiently pious, click to restart.',
+                animate:false,
+                close:false,
+                mask:false,
+                boxid:'god',
+                autohide:10,
+                top:20,
+                left:20,
+                fixed:true
+              });
+            };
+          </script>
+        """
+        return data
+
+    def imagePopup(self, data, uri):
+        data += """
+          <script>
+            window.top.onload = function() {
+              TINY.box.show({
+                image:'%s',
+                animate:true,
+                fixed: true,
+                close: true
+              });
+            };
+          </script>
+        """ % (uri)
         return data
 
     def popup(self, data, html):
