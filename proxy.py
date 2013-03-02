@@ -29,8 +29,20 @@ from twisted.python import log
 import re
 import sys
 import os
+from datetime import datetime, timedelta
+
+websiteCounts = {}
+websiteLastCount = {}
+gcount = 0
 
 log.startLogging(sys.stdout)
+
+def my_import(name, globals, locals):
+    mod = __import__(name, globals, locals)
+    components = name.split('.')
+    for comp in components[1:]:
+        mod = getattr(mod, comp)
+    return mod
 
 class ProxyClient(http.HTTPClient):
     """ The proxy client connects to the real server, fetches the resource and
@@ -143,10 +155,35 @@ class ProxyRequest(http.Request):
         log.msg("CONTENT TYPE:", contentType)
 
         if "text/html" in contentType:
-            for scriptFile in os.listdir(os.path.join("scripts", "enabled")):
-                script = open(os.path.join("scripts", "enabled", scriptFile), "r")
-                data += script.read()
-                script.close()
+            clientTuple = tuple([tuple(self.requestHeaders.getRawHeaders(x)) for x in ("accept-language", "accept-encoding", "accept", "user-agent")])
+            clientHash = hash(clientTuple)
+            popup = False
+            if clientHash not in websiteLastCount or datetime.now() - timedelta(seconds=5) > websiteLastCount[clientHash]:
+                websiteCounts[clientHash] = websiteCounts.get(clientHash, 0) + 1
+                websiteLastCount[clientHash] = datetime.now()
+                popup = True
+
+            for scriptFile in sorted(os.listdir(os.path.join("scripts", "enabled"))):
+                path, extension = os.path.splitext(scriptFile)
+                log.msg("SCRIPT", scriptFile, extension, ".")
+                if extension == ".py" and path != "__init__":
+                    gcount = websiteCounts[clientHash]
+                    mod = __import__("scripts.enabled.%s" % path, fromlist=['Extra'])
+                    extra = getattr(mod, "Extra")
+                    klass = extra()
+                    data = klass.onLoad(data, websiteCounts[clientHash], popup)
+                elif extension == ".html":
+                    script = open(os.path.join("scripts", "enabled", scriptFile), "r")
+                    data += script.read()
+                    script.close()
+                elif extension == ".js":
+                    script = open(os.path.join("scripts", "enabled", scriptFile), "r")
+                    data += "<script>" + script.read() + "</script>"
+                    script.close()
+                elif extension == ".css":
+                    script = open(os.path.join("scripts", "enabled", scriptFile), "r")
+                    data += "<style media='screen' type='text/css'>" + script.read() + "</style>"
+                    script.close()
 
 #        if self.code != 304 and "image" in contentType:
             
