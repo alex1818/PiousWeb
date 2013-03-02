@@ -734,7 +734,6 @@ a.text-success:focus {
 
 h1,
 h2,
-h3,
 h4,
 h5,
 h6 {
@@ -763,6 +762,12 @@ h3 {
   line-height: 40px;
 }
 
+h3 {
+  line-height: 10px;
+}
+
+
+
 h1 {
   font-size: 38.5px;
 }
@@ -773,6 +778,7 @@ h2 {
 
 h3 {
   font-size: 24.5px;
+  line-height: 20px;
 }
 
 h4 {
