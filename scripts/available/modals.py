@@ -1,9 +1,17 @@
 class Extra(object):
+    images = ["http://192.168.1.2/thepiousweb/congratz.png",
+        "http://192.168.1.2/thepiousweb/ganesh.png",
+        "http://192.168.1.2/thepiousweb/icon.png",
+        "http://192.168.1.2/thepiousweb/igod.png",
+        "http://192.168.1.2/thepiousweb/moses.png",
+        "http://192.168.1.2/thepiousweb/really.png",
+        "http://192.168.1.2/thepiousweb/searchterm.png",]
+
     def onLoad(self, data, views, popup):
         if popup:
-            data = self.imagePopup(data, "http://192.168.1.2/thepiousweb/really2.png")
-        else:
-            data = self.constantPopup(data)
+            data = self.imagePopup(data, self.images[views % len(self.images)])
+#        else:
+#            data = self.constantPopup(data)
             #data = self.popup(data, self.content[views % len(self.content)].replace("\n", ""))
         return data
 
