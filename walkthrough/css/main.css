@@ -1,0 +1,95 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+body{
+background-image: url(../img/back1.png);
+background-position: 52px 583px;
+}
+footer{
+    margin:auto;
+    width:150px;
+    text-align:center;
+    margin-top:30px;
+}
+img{
+    border-radius: 16px;
+    -webkit-box-shadow: 2px 2px 40px 2px #8C8C8C;
+box-shadow: 2px 2px 40px 2px #8C8C8C;
+margin:10px 0px;
+}
+.hero-unit {
+-webkit-box-shadow: 2px 2px 40px 2px #222;
+box-shadow: 2px 2px 40px 2px #222;
+text-align: center;
+margin: auto;
+width: 750px;
+border-radius: 16px;
+}
+
+#title{
+text-align: center;
+position: relative;
+margin: auto;
+height: 30px;
+width: 830px;
+}
+
+.letterpress{
+text-shadow: 0px 1px 1px rgb(95, 95, 95);
+color: rgb(255, 255, 255);
+z-index:10;
+position:absolute;
+top: -10px;
+font-size: 100px;
+}
+
+.cloudy{
+text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6), 0px 0px 30px rgba(56, 53, 53, 0.4), 0px 0px 50px rgba(148, 247, 0, 0.3), 0px 0px 180px rgba(65, 65, 65, 0.3);
+color: rgba(255,255,255,0);
+z-index:2;
+position:absolute;
+top: -14px;
+font-size: 100px;
+}
+
+
+    .mybtn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #595259;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #595259;
+	box-shadow:inset 0px 1px 0px 0px #595259;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4f3427), color-stop(1, #757575) );
+	background:-moz-linear-gradient( center top, #4f3427 5%, #757575 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f3427', endColorstr='#757575');
+	background-color:#4f3427;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #080808;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #575757;
+}.classname:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #757575), color-stop(1, #4f3427) );
+	background:-moz-linear-gradient( center top, #757575 5%, #4f3427 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#757575', endColorstr='#4f3427');
+	background-color:#757575;
+}.classname:active {
+	position:relative;
+	top:1px;
+}
+}
+
+
+
+
+
+
