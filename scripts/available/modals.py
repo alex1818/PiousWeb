@@ -17,11 +17,58 @@ class Extra(object):
         </table>
         """,
 
-            ]
+        """<img src="http://192.168.1.2/thepiousweb/ThePiousWeb.png" />
+        <br />
+        <br />
+        <table cellpadding=20>
+          <tr>
+            <td><img src="http://192.168.1.2/thepiousweb/adameve.jpg" /></td>
+            <td><p>Really? This is how you spend your time?</p>
+
+            <p><i>Commandment: Thou shalt not be tempted by time-wasting ideas.</i></p>
+
+            <p>Continue surfing the pious way?</p>
+            </td>
+          </tr>
+        </table>
+        """,
+
+        """<img src="http://192.168.1.2/thepiousweb/ThePiousWeb.png" />
+        <br />
+        <br />
+        <table cellpadding=20>
+          <tr>
+            <td><img src="http://192.168.1.2/thepiousweb/jesuslaptop.jpg" /></td>
+            <td><p>Your search terms appear less than honourable.</p>
+
+            <p><i>Commandment: Thou shalt surf only for the word of God. And preferably when wearing sandals.</i></p>
+
+            <p>Continue surfing for the word of God?</p>
+            </td>
+          </tr>
+        </table>
+        """,
+
+        """<img src="http://192.168.1.2/thepiousweb/ThePiousWeb.png" />
+        <br />
+        <br />
+        <table cellpadding=20>
+          <tr>
+            <td><img src="http://192.168.1.2/thepiousweb/buddha.jpg" /></td>
+            <td><p>Who speaks these words you read?</p>
+
+            <p><i>Commandment: Thou shalt not praise false deities, corporation and/or allow cookies?</i></p>
+
+            <p>Continue reading?</p>
+            </td>
+          </tr>
+        </table>
+        """,
+
+        ]
 
     def onLoad(self, data, views, popup):
         if popup:
-            data = self.popup(data, self.content[0].replace("\n", ""))
             data = self.popup(data, self.content[views % len(self.content)].replace("\n", ""))
         return data
 
